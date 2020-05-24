@@ -1,31 +1,30 @@
 ﻿@page "/"
 @using WasmServer.Shared
-@inject HttpClient Http
+@inject IHttpClientFactory ClientFactory
+@inject IHelper helper
 
 <h1>Market News</h1>
 <hr />
 @if (articles == null)
 {
-    <p><em>Loading...</em></p>
+<p><em>Loading...</em></p>
 }
 else
 {
-    <div class="row">
-        @foreach (var x in articles)
+<div class="card-columns">
+    @foreach (var x in articles)
         {
-            <div class="col-sm-4">
-                <div class="card" style="margin-bottom:5px">
-                    <img src="@x.Image" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">@x.Headline</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@x.Date.ToLongDateString()</h6>
-                        <p class="card-text">@x.Summary</p>
-                        <div>Source: <a href="@x.Url" target="_blank">@x.Source</a></div>
-                    </div>
-                </div>
-            </div>
+    <div class="card">
+        <img src="@x.Image" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@x.Headline</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@x.Date.ToLongDateString()</h6>
+            <p class="card-text">@x.Summary</p>
+            <div>Source: <a href="@x.Url" target="_blank">@x.Source</a></div>
+        </div>
+    </div>
         }
-    </div>  
+</div>
 }
 
 @code {
@@ -33,6 +32,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        articles = await Http.GetFromJsonAsync<Article[]>("https://finnhub.io/api/v1/news?category=general&token=bqfrdbnrh5rerflqe0q0");
+        var client = ClientFactory.CreateClient(HttpClientName.FinnHub);
+        articles = await client.GetFromJsonAsync<Article[]>($"news?category=general&token={helper.FinnHubApiKey}");
     }
 }
