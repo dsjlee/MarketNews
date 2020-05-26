@@ -1,6 +1,6 @@
 {
-  "name": "WasmServer",
-  "short_name": "WasmServer",
+  "name": "Market News",
+  "short_name": "Market News",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

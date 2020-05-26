@@ -18,9 +18,7 @@ namespace WasmServer.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddSingleton<IHelper, Helper>();
-            builder.Services.AddHttpClient(HttpClientName.Host, client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-            builder.Services.AddHttpClient(HttpClientName.FinnHub, client => client.BaseAddress = new Uri(BaseAddress.Finnhub));
+            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();
         }

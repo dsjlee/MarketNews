@@ -6,25 +6,25 @@ using System.Text;
 
 namespace WasmServer.Shared
 {
-    public class Helper : IHelper
+    public class Helper
     {
-        public Helper(IConfiguration configuration)
-        {
-            Configuration = configuration;
-            FinnHubApiKey = Configuration["FinnHub:ApiKey"];
-        }
-        public IConfiguration Configuration { get; }
-        public string FinnHubApiKey { get; }
+        public static string FinnHubApiKey;
+        public static bool IsNewCaching;
     }
 
     public struct BaseAddress
     {
-        public static readonly string Finnhub = "https://finnhub.io/api/v1/";
+        public static readonly string Finnhub = "https://finnhub.io/";
     }
 
     public struct HttpClientName
     {
         public static readonly string Host = "Host";
         public static readonly string FinnHub = "FinnHub";
+    }
+
+    public struct CacheKey
+    {
+        public static readonly string MarketNews = "MarketNews";
     }
 }
