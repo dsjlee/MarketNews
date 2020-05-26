@@ -3,6 +3,16 @@
 @inject HttpClient http
 
 <h1>Market News</h1>
+@if (categories != null)
+{
+<div class="btn-group" role="group" aria-label="categories">
+    <button type="button" class="btn btn-primary" @onclick="@(e => CategorySelect("All"))">All</button>
+    @foreach (var category in categories)
+    {
+        <button type="button" class="btn btn-primary" @onclick="@(e => CategorySelect(category))">@category</button>
+    }
+</div>
+}
 <hr />
 @if (articles == null)
 {
@@ -11,15 +21,19 @@
 else
 {
     <div class="card-columns">
-        @foreach (var x in articles)
+        @foreach (var article in filtered)
         {
             <div class="card">
-                <img src="@x.Image" class="card-img-top" alt="...">
+                <img src="@article.Image" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">@x.Headline</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">@x.Date.ToLongDateString()</h6>
-                    <p class="card-text">@x.Summary</p>
-                    <div>Source: <a href="@x.Url" target="_blank">@x.Source</a></div>
+                    <h5 class="card-title">@article.Headline</h5>                   
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        @article.Date.ToLongDateString()
+                        &nbsp;&nbsp;
+                        <span class="badge badge-primary">@article.Category</span>
+                    </h6>
+                    <p class="card-text">@article.Summary</p>
+                    <div>Source: <a href="@article.Url" target="_blank">@article.Source</a></div>
                 </div>
             </div>
         }
@@ -27,10 +41,29 @@ else
 }
 
 @code {
-    private Article[] articles;
+    private List<Article> articles;
+    private List<Article> filtered;
+    private List<string> categories;
 
     protected override async Task OnInitializedAsync()
     {
-        articles = await http.GetFromJsonAsync<Article[]>("News");
+        articles = await http.GetFromJsonAsync<List<Article>>("News");
+        filtered = articles ?? new List<Article>();
+        if (articles != null)
+        {
+            categories = articles.Select(x => x.Category).Distinct().OrderBy(x => x).ToList();
+        }
+    }
+
+    private void CategorySelect(string category)
+    {
+        if (category == "All")
+        {
+            filtered = articles;
+        }
+        else
+        {
+            filtered = articles.Where(x => x.Category == category).ToList();
+        }
     }
 }
