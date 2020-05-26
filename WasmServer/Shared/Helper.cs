@@ -27,4 +27,9 @@ namespace WasmServer.Shared
     {
         public static readonly string MarketNews = "MarketNews";
     }
+
+    public struct NewsCategory
+    {
+        public static readonly string All = "All";
+    }
 }
