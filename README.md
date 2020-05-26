@@ -15,7 +15,8 @@ public Startup(IConfiguration configuration)
     Helper.FinnHubApiKey = Configuration["FinnHub:ApiKey"];
 }
 ```
-Alternatively, enable user-secrets for WasmServer.Server project and add key-value pair to avoid committing secret-key to repository
+Alternatively, enable user-secrets for WasmServer.Server project and add key-value pair. 
+(This will avoid committing secret-key to git repository).
 
 ```javascript
 "FinnHub": {
