@@ -24,20 +24,22 @@
 }
 else
 {
-    <div class="card-columns">
+    <div class="row">
         @foreach (var article in articles.Where(x => (selectedCategory == NewsCategory.All) || x.Category == selectedCategory))
         {
-            <div class="card">
-                <img src="@article.Image" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">@article.Headline</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                        @article.Date.ToLongDateString()
-                        &nbsp;&nbsp;
-                        <span class="badge badge-primary">@article.Category</span>
-                    </h6>
-                    <p class="card-text">@article.Summary</p>
-                    <div>Source: <a href="@article.Url" target="_blank">@article.Source</a></div>
+            <div class="col-sm-4">
+                <div class="card" style="margin-bottom: 10px">
+                    <img src="@article.Image" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@article.Headline</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            @article.Date.ToLongDateString()
+                            &nbsp;&nbsp;
+                            <span class="badge badge-primary">@article.Category</span>
+                        </h6>
+                        <p class="card-text">@article.Summary</p>
+                        <div>Source: <a href="@article.Url" target="_blank">@article.Source</a></div>
+                    </div>
                 </div>
             </div>
         }
