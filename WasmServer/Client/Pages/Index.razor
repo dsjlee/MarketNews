@@ -17,7 +17,7 @@
     </div>
 }
 <hr />
-@if (articles == null)
+@if (articles == null || articles.Count == 0)
 {
     <p><em>Loading...</em></p>
 }
@@ -46,15 +46,13 @@ else
 }
 
 @code {
-    private List<Article> articles;
-    private List<Article> filtered;
+    private List<Article> articles = new List<Article>();
     private List<string> categories;
     private string selectedCategory = NewsCategory.All;
 
     protected override async Task OnInitializedAsync()
     {
-        articles = await http.GetFromJsonAsync<List<Article>>("News");
-        filtered = articles ?? new List<Article>();
+        articles = await http.GetFromJsonAsync<List<Article>>("News") ?? new List<Article>();
         if (articles != null)
         {
             categories = articles.Select(x => x.Category).Distinct().OrderBy(x => x).ToList();
