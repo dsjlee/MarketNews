@@ -4,9 +4,15 @@
 
 @if (categories != null)
 {
-    <button type="button" class="btn btn-primary float-right" disabled="@IsRefreshing">
-        <span class="oi oi-reload" aria-hidden="true" @onclick="RefreshArticles"></span>
-    </button>
+    <div class="float-right">
+        @if (LastRefreshed.HasValue)
+        {
+            <span>@($"Refreshed: {LastRefreshed.Value.ToLocalTime().ToLongTimeString()}")&nbsp;</span>
+        }
+        <button type="button" class="btn btn-primary float-right" disabled="@IsRefreshing">
+            <span class="oi oi-reload" aria-hidden="true" @onclick="RefreshArticles"></span>
+        </button>
+    </div>
     <div class="row">
         <div class="col-md-6 col-lg-3">
             <select class="form-control" @bind="selectedCategory">
@@ -53,6 +59,7 @@ else
     private List<string> categories;
     private string selectedCategory = NewsCategory.All;
     private bool IsRefreshing = false;
+    private DateTime? LastRefreshed;
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,5 +75,6 @@ else
             categories = articles.Select(x => x.Category).Distinct().OrderBy(x => x).ToList();
         }
         IsRefreshing = false;
+        LastRefreshed = DateTime.Now;
     }
 }
