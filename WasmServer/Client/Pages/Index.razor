@@ -4,6 +4,9 @@
 
 @if (categories != null)
 {
+    <button type="button" class="btn btn-primary float-right">
+        <span class="oi oi-reload" aria-hidden="true" @onclick="RefreshArticles"></span>
+    </button>
     <div class="row">
         <div class="col-md-6 col-lg-3">
             <select class="form-control" @bind="selectedCategory">
@@ -51,6 +54,11 @@ else
     private string selectedCategory = NewsCategory.All;
 
     protected override async Task OnInitializedAsync()
+    {
+        await RefreshArticles();
+    }
+
+    private async Task RefreshArticles()
     {
         articles = await http.GetFromJsonAsync<List<Article>>("News") ?? new List<Article>();
         if (articles != null)
