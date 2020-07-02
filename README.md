@@ -1,7 +1,7 @@
 # MarketNews
 Blazor WebAssembly progressive web application using FinnHub news api
 
-Demo of running application: http://marketnews.gearhostpreview.com
+Demo of running application: https://marketnews.gear.host
 
 ## Instruction
 Sign up to get API key from https://finnhub.io
